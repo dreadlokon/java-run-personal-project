@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="jackson-annotations-2.12.4">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../JavaRush/Plugin/jackson-annotations-2.12.4.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
