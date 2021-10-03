@@ -3,7 +3,7 @@ package com.chatterApp.сonfig;
 import com.chatterApp.dao.PostsList;
 
 public class DbRegistry {
-    private static DbRegistry dbRegistry = new DbRegistry();
+    private static final DbRegistry dbRegistry = new DbRegistry();
     protected PostsList postsList;
 
     private static DbRegistry getInstance() {

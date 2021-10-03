@@ -1,29 +1,36 @@
 package com.chatterApp.controllers;
 
+import com.chatterApp.models.Post;
 import com.chatterApp.сonfig.DbRegistry;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.BindException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
+
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MainControllerTest {
 
     int testPort;
     MainController sutController;
-   // DbRegistry dbRegistryStub
+    PostDaoStub postSource;
 
     @Before
     public void setUp() throws Exception {
         //starting server on random port
-        DbRegistry.setPostSource(new PostDaoStub());
+        postSource = new PostDaoStub();
+        DbRegistry.setPostSource(postSource);
         testPort = new Random().nextInt(16383) + 49152;
         sutController = new MainController();
         sutController.startServer(testPort);
@@ -43,8 +50,7 @@ public class MainControllerTest {
         //try to take response
         Response testResponse = client.newCall(testRequest).execute();
         String responseString = testResponse.body().string();
-
-        Assert.assertEquals("[]", responseString);
+        assertThat("[]").isEqualTo(responseString);
     }
 
     @Test
@@ -52,7 +58,7 @@ public class MainControllerTest {
         //imitate http client
         OkHttpClient client = new OkHttpClient();
         String url = HttpUrl
-                .parse("http://localhost:" + testPort + "/posts/search")
+                .parse(String.format("http://localhost:%d/posts/search", testPort))
                 .newBuilder()
                 .addQueryParameter("author", "Cat")
                 .build()
@@ -62,9 +68,9 @@ public class MainControllerTest {
         Response testResponse = client.newCall(testRequest).execute();
         String responseString = testResponse.body().string();
 
-        String expectedResponse = "\\[\\{\"author\":\"Cat\",\"creationDate\":\\d*,\"message\":\"Meow\"}]";
+        List<Post> expectedResponse = new ArrayList<>(Collections.singleton(postSource.getPosts().get(0)));
 
-        Assert.assertTrue(responseString.matches(expectedResponse));
+        assertThatJson(responseString).isEqualTo(expectedResponse);
     }
 
     @Deprecated

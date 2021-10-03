@@ -17,6 +17,7 @@ public class PostDao implements PostsList {
         postList.add(new Post("Arnold", new Date(), "Put that cookie down"));
         postList.add(new Post("Raynor", new Date(), "Say good night, ugly"));
     }
+
     @Override
     public List<Post> getPosts() {
         return postList;
