@@ -1,7 +1,7 @@
 package com.chatterApp.services;
 
 import com.chatterApp.сonfig.DbRegistry;
-import com.chatterApp.dao.PostsList;
+import com.chatterApp.dao.PostContainer;
 import com.chatterApp.models.Post;
 
 import java.util.Collections;
@@ -11,7 +11,7 @@ import java.util.Map;
 import static java.util.stream.Collectors.toList;
 
 public class SearchService {
-    static PostsList postsList = DbRegistry.getPostList();
+    static PostContainer postContainer = DbRegistry.getPostList();
 
     public static List<Post> searchPosts(Map<String, String> parametersMap) {
         //some scalable search logic in future
@@ -24,7 +24,7 @@ public class SearchService {
         }
         String parameterValue = parametersMap.get("author");
 
-        return postsList.getPosts().stream()
+        return postContainer.getPosts().stream()
                 .filter(post -> post.getAuthor().equals(parameterValue))
                 .collect(toList());
     }

@@ -4,7 +4,7 @@ import com.chatterApp.models.Post;
 
 import java.util.List;
 
-public interface PostsList {
+public interface PostContainer {
 
     List<Post> getPosts();
 }
