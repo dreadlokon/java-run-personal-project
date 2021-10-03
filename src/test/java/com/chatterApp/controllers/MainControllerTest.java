@@ -1,5 +1,6 @@
 package com.chatterApp.controllers;
 
+import com.chatterApp.сonfig.DbRegistry;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -17,11 +18,13 @@ public class MainControllerTest {
 
     int testPort;
     MainController sutController;
+   // DbRegistry dbRegistryStub
 
     @Before
     public void setUp() throws Exception {
         //starting server on random port
-        testPort = new Random().nextInt(65534) + 1;
+        DbRegistry.setPostSource(new PostDaoStub());
+        testPort = new Random().nextInt(16383) + 49152;
         sutController = new MainController();
         sutController.startServer(testPort);
     }
@@ -51,7 +54,7 @@ public class MainControllerTest {
         String url = HttpUrl
                 .parse("http://localhost:" + testPort + "/posts/search")
                 .newBuilder()
-                .addQueryParameter("author", "Raynor")
+                .addQueryParameter("author", "Cat")
                 .build()
                 .toString();
         Request testRequest = new Request.Builder().url(url).build();
@@ -59,11 +62,12 @@ public class MainControllerTest {
         Response testResponse = client.newCall(testRequest).execute();
         String responseString = testResponse.body().string();
 
-        String expectedResponse = "\\[\\{\"author\":\"Raynor\",\"creationDate\":\\d*,\"message\":\"Say good night, ugly\"}]";
+        String expectedResponse = "\\[\\{\"author\":\"Cat\",\"creationDate\":\\d*,\"message\":\"Meow\"}]";
 
         Assert.assertTrue(responseString.matches(expectedResponse));
     }
 
+    @Deprecated
     @Test(expected = BindException.class)
     public void shouldThrowBindException() throws IOException {
         sutController.startServer(testPort);
@@ -71,7 +75,6 @@ public class MainControllerTest {
 
     @After
     public void tearDown() {
-        MainController.server.stop(0);
-
+        sutController.stopServer(0);
     }
 }
