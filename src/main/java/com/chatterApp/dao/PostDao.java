@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PostDao {
+public class PostDao implements PostContainer {
     private static final List<Post> postList;
 
     static {
@@ -18,7 +18,8 @@ public class PostDao {
         postList.add(new Post("Raynor", new Date(), "Say good night, ugly"));
     }
 
-    public static List<Post> getPostList() {
+    @Override
+    public List<Post> getPosts() {
         return postList;
     }
 }
