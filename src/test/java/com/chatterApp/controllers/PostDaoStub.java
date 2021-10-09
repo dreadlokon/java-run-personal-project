@@ -12,12 +12,14 @@ public class PostDaoStub implements PostContainer {
 
     static {
         postList = new ArrayList<>();
-        postList.add(new Post("Cat", new Date(), "Meow"));
-        postList.add(new Post("Dog", new Date(), "BowWow"));
     }
 
     @Override
     public List<Post> getPosts() {
         return postList;
+    }
+
+    public void add (Post post) {
+        postList.add(post);
     }
 }

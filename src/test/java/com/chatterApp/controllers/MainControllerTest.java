@@ -12,10 +12,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.BindException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,12 +25,13 @@ public class MainControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        //starting server on random port
         postSource = new PostDaoStub();
         DbRegistry.setPostSource(postSource);
+
         testPort = new Random().nextInt(16383) + 49152;
         sutController = new MainController();
         sutController.startServer(testPort);
+
     }
 
     @Test
@@ -55,6 +53,9 @@ public class MainControllerTest {
 
     @Test
     public void shouldReturnValidPost() throws IOException {
+        Post fakePost = new Post("Cat", new Date(), "Meow");
+        postSource.add(fakePost);
+
         //imitate http client
         OkHttpClient client = new OkHttpClient();
         String url = HttpUrl
@@ -68,8 +69,7 @@ public class MainControllerTest {
         Response testResponse = client.newCall(testRequest).execute();
         String responseString = testResponse.body().string();
 
-        List<Post> expectedResponse = new ArrayList<>(Collections.singleton(postSource.getPosts().get(0)));
-
+        List<Post> expectedResponse = new ArrayList<>(Collections.singleton(fakePost));
         assertThatJson(responseString).isEqualTo(expectedResponse);
     }
 
