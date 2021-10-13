@@ -20,19 +20,29 @@
 >CREATE TABLE IF NOT EXISTS chatter.person  
 (  
  id        	UUID PRIMARY KEY,  
- firstName  varchar(30),  
- lastName 	varchar(30),  
- birthDate 	DATE,			//возможно лучше BigInteger для более простой совместимости с Java Date.class  
+ first_name  varchar(30),  
+ last_name 	varchar(30),  
+ birth_date 	DATE,			  
  email     	varchar(50),  
  role	    personRole,  
+ UNIQUE(email)  
 );
 
 >CREATE TABLE IF NOT EXISTS chatter.post  
 (  
  id           UUID PRIMARY KEY,  
  author	     UUID REFERENCES chatter.person (id),  
- creationDate DATE,  
+ creation_date DATE,  
  message	 TEXT  
- likes	     INTEGER,		//ранее данное поле отсутсвовало в классе модели  
-);
+ likes	     INTEGER,		//здесь храним только количество  
+);  
+
+### M2M таблица
+> CREATE TABLE IF NOT EXISTS chatter.likes  
+(  
+ person_id UUID REFERENCES chatter.person (id),  
+ post_id UUID  ,  
+ FOREIGN KEY (post_id) REFERENCES chatter.post (id) ON DELETE CASCADE,  
+)
+
 
