@@ -15,7 +15,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jackson.version>2.12.4</jackson.version>
         <postgresql.version>42.2.24</postgresql.version>
-        <liquibase.version>4.5.0</liquibase.version>
+        <liquibase.version>3.5.5</liquibase.version>
     </properties>
 
     <dependencies>
@@ -78,5 +78,25 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <changeLogFile>${basedir}/src/main/resources/db.changelog.changelog-master.xml</changeLogFile>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://localhost:32769/javarun</url>
+                    <username>javarun</username>
+                    <password>javarun</password>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     
 </project>

@@ -17,7 +17,7 @@
 
 ### Основные сущности
 
->CREATE TABLE IF NOT EXISTS chatter.person  
+>CREATE TABLE IF NOT EXISTS chatter.persons  
 (  
  id        	UUID PRIMARY KEY,  
  first_name  varchar(30),  
@@ -28,10 +28,10 @@
  UNIQUE(email)  
 );
 
->CREATE TABLE IF NOT EXISTS chatter.post  
+>CREATE TABLE IF NOT EXISTS chatter.posts  
 (  
  id           UUID PRIMARY KEY,  
- author	     UUID REFERENCES chatter.person (id),  
+ author	     UUID REFERENCES chatter.persons (id),  
  creation_date DATE,  
  message	 TEXT  
  likes	     INTEGER,		//здесь храним только количество  
@@ -40,9 +40,11 @@
 ### M2M таблица
 > CREATE TABLE IF NOT EXISTS chatter.likes  
 (  
- person_id UUID REFERENCES chatter.person (id),  
+ person_id UUID REFERENCES chatter.persons (id),  
  post_id UUID  ,  
- FOREIGN KEY (post_id) REFERENCES chatter.post (id) ON DELETE CASCADE,  
+ FOREIGN KEY (post_id) REFERENCES chatter.posts (id) ON DELETE CASCADE,  
 )
 
-
+### Команды запуска Docker
+docker run --name postgres-2 -p 32768:5432 -e POSTGRES_USER=javarun -e POSTGRES_PASSWORD=javarun -e POSTGRES_DB=javarun -d postgres
+docker run --name liquitest -p 32769:5432 -e POSTGRES_USER=javarun -e POSTGRES_PASSWORD=javarun -e POSTGRES_DB=javarun -d postgres
