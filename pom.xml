@@ -89,12 +89,28 @@
                 <configuration>
                     <changeLogFile>${basedir}/src/main/resources/db.changelog.changelog-master.xml</changeLogFile>
                     <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:32769/javarun</url>
+                    <url>jdbc:postgresql://localhost:32769/javarun?createDatabaseIfNotExist=true</url>
                     <username>javarun</username>
                     <password>javarun</password>
+                    <defaultSchemaName>chatter</defaultSchemaName>
                     <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${postgresql.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

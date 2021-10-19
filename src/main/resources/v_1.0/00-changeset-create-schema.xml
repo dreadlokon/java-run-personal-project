@@ -5,7 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet id="2" author="Dmitriy">
+    <changeSet id="2" author="Dmitriy" dbms="postgresql">
+
         <sqlFile dbms="postgresql"
                  encoding="utf8"
                  endDelimiter=";"
@@ -13,6 +14,9 @@
                  splitStatements="true"
                  stripComments="true"
                  path="00-create-schema.sql"/>
+
     </changeSet>
+
+
 
 </databaseChangeLog>

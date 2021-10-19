@@ -14,6 +14,7 @@
                  stripComments="true"
                  path="01-create-persons-table.sql"/>
 
+
         <rollback>
             <sqlFile dbms="postgresql"
                      encoding="utf8"
